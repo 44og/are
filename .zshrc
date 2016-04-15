@@ -1,26 +1,25 @@
-# Set up the prompt
-
 autoload -Uz colors
 colors
 
 
+# からふるぷろんぷとくん
 PROMPT=$'%{\e[38;5;46m%}%n%{\e[m%}%{\e[38;5;226m%}@%m%{\e[m%} %{\e[38;5;45m%}[%D]%{\e[m%} %{\e[38;5;201m%}{%*}%{\e[m%} %{\e[38;5;208m%}(%~)%{\e[m%}
 %{\e[38;5;27m%}%#%{\e[m%}'
 RPROMPT=$'%{\e[38;5;249m%}[%~]%{\e[m%}'
 setopt histignorealldups sharehistory
 
-# Use emacs keybindings even if our EDITOR is set to vi
+# キーバインドemacs 
 bindkey -e
 
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+# ヒストリー１０まん
 HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE=~/.zsh_history
 
-# Use modern completion system
 autoload -Uz compinit
 compinit
 
+# 設定いろいろ
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
@@ -43,7 +42,7 @@ eval "$(rbenv init -)"
 
 
 
-#alias setting
+# おれおれえいりあす
 alias ll='ls -alF'
 alias la='ls -A'
 alias emacsn='emacs -nw'
@@ -61,11 +60,11 @@ alias sdhn='sudo shutdown -h now'
 alias chrome='google-chrome --disable-new-avatar-menu'
 
 
-# cd option
+# cdしたらpushしたいまん
 setopt auto_pushd
 setopt pushd_ignore_dups
 
-# history option
+# ひすとりおぷしょん
 setopt share_history
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
@@ -73,5 +72,4 @@ setopt hist_reduce_blanks
 setopt extended_glob
 bindkey '^R' history-incremental-pattern-search-backward
 
-# set default editor
 export EDITOR="usr/bin/emacs -nw"
