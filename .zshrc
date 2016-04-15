@@ -11,7 +11,7 @@ setopt histignorealldups sharehistory
 # キーバインドemacs 
 bindkey -e
 
-# ヒストリー１０まん
+# ヒストリ１０まん
 HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE=~/.zsh_history
