@@ -1,0 +1,21 @@
+rofi.modi: run,window,drun,system:~/.config/rofi/script/rofi_system.sh,memo:~/.config/rofi/script/memo.sh,ssh
+rofi.combi-modi: window,drun
+rofi.lines: 8
+rofi.width: 40
+rofi.font: Ricty Diminished Discord for Poweline 18
+rofi.bw: 2
+rofi.location: 0
+rofi.padding: 20
+rofi.sidebar-mode: true
+rofi.hide-scrollbar: true
+rofi.fixed-num-lines: true
+rofi.kb-row-up: Up,Control+p,Shift+Tab
+rofi.kb-row-down: Down,Control+n
+rofi.kb-cancel: Escape,Control+g,Control+bracketleft,Control+c
+rofi.kb-mode-next: Shift+Right,Control+i,Control+Tab
+rofi.kb-mode-previous: Shift+Left,Control+Shift+i
+rofi.color-enabled: true
+rofi.color-window: argb:cc040404,argb:cc040404,argb:cc458588
+rofi.color-normal: argb:00000000,#cc458588,argb:00000000,#cc076678,#cc83a598
+rofi.color-active: argb:00000000,#cc689b6a,argb:00000000,#cc427b58,#cc8ec07c
+rofi.color-urgent: argb:00000000,#ccb16286,argb:00000000,#cc8f3f71,#ccd3869b
