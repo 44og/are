@@ -1,13 +1,14 @@
-#!/usr/bin/zsh
+#!/bin/zsh
 autoload -Uz colors
 colors
 
 if [ -n "$SSH_CONNECTION" ]; then
     export PROMPT=$'%{\e[38;5;111m%}<SSH> %{\e[38;5;47m%}%n%{\e[m%}%{\e[38;5;227m%}@%m%{\e[m%} %{\e[38;5;46m%}[%D]%{\e[m%} %{\e[38;5;202m%}{%*}%{\e[m%} %{\e[38;5;209m%}(%~)%{\e[m%}
-%(?.\e[38;5;45m%}.\e[38;5;197m%})%#%{\e[m%}'
+%{\e[38;5;45m%}%#%{\e[m%}'
 else
-    export PROMPT=$'%{\e[38;5;46m%}%n%{\e[m%}%{\e[38;5;226m%}@%m%{\e[m%} %{\e[38;5;45m%}[%D]%{\e[m%} %{\e[38;5;201m%}{%*}%{\e[m%} %{\e[38;5;208m%}(%~)%{\e[m%}
-%(?.\e[38;5;27m%}.\e[38;5;196m%})%#%{\e[m%}'
+    export PROMPT=$'%{\e[38;5;28m%}%n%{\e[m%}%{\e[38;5;142m%}@%m%{\e[m%} %{\e[38;5;38m%}[%D]%{\e[m%} %{\e[38;5;133m%}{%*}%{\e[m%} %{\e[38;5;130m%}(%~)%{\e[m%}
+%{\e[38;5;04m%}%#%{\e[m%}'
+
 fi
 
 if [ -e ~/os_info.sh ]; then
@@ -29,6 +30,8 @@ HISTFILE=~/.zsh_history
 autoload -Uz compinit
 compinit
 
+
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
 
@@ -52,9 +55,11 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 #export PATH="$HOME/.rbenv/bin:$PATH"
 #eval "$(rbenv init -)"
 
+export PATH=${HOME}/local/bin:$PATH
+
 alias ll='ls -talFh'
 alias la='ls -A'
-alias emacs='env TERM=screen emacsclient -c -a ""'
+alias emacs='env TERM=screen emacsclient -c -a -nw""'
 alias l='ls -CF'
 alias sudo='sudo '
 alias grep='grep --color=auto'
@@ -72,8 +77,9 @@ alias cal="/usr/bin/cal | grep -C6 --color '`date +' %-d '`'  "
 alias ks='echo "は？"' 
 alias pip-all-update="pip list --outdated --format=legacy | awk '{print $1}' | xargs sudo  pip install -U"
 alias fuck='echo "ふぁっきゅー"'
-alias pbcopy='xsel --clipboard --input'
+alias pbcopy='xclip -selection c'
 alias count_file='ls -UF | grep -v / | wc -l'
+
 
 setopt auto_pushd
 setopt pushd_ignore_dups
@@ -85,7 +91,13 @@ setopt hist_reduce_blanks
 setopt extended_glob
 bindkey '^R' history-incremental-pattern-search-backward
 
-export LESS='-R'
+export GREP_COLOR="37;45"
+export EDITOR="vim"
+
+export PYTHONPATH=/usr/local:$PYTHONPATH
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+export LESS='-iMR'
 if [ -e /usr/bin/src-hilite-lesspipe.sh ];then
     export LESSOPEN='| /usr/bin/src-hilite-lesspipe.sh %s'
 elif [ -e /usr/share/source-highlight/src-hilite-lesspipe.sh ];then
@@ -93,16 +105,5 @@ elif [ -e /usr/share/source-highlight/src-hilite-lesspipe.sh ];then
 fi
 
 export VISUAL='vim'
-export GREP_COLOR="37;45"
 stty stop undef
-cal
-
-function _pip_completion {
-    local words cword
-    read -Ac words
-    read -cn cword
-    reply=( $( COMP_WORDS="$words[*]"\
-	       COMP_CWORD=$(( cword-1))\
-	       PIP_AUTO_COMPLETE=1 $words[1] ) )
-}
-compctl -K _pip_completion pip
+cal.rb
