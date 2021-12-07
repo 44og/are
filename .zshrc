@@ -3,10 +3,10 @@ autoload -Uz colors
 colors
 
 if [ -n "$SSH_CONNECTION" ]; then
-    export PROMPT=$'%{\e[38;5;111m%}<SSH> %{\e[38;5;47m%}%n%{\e[m%}%{\e[38;5;227m%}@%m%{\e[m%} %{\e[38;5;46m%}[%D]%{\e[m%} %{\e[38;5;202m%}{%*}%{\e[m%} %{\e[38;5;209m%}(%~)%{\e[m%}
-%{\e[38;5;45m%}%#%{\e[m%}'
+    export PROMPT=$'%{\e[38;5;244m%}<SSH> %{\e[38;5;70m%}%n%{\e[m%}%{\e[38;5;3m%}@%m%{\e[m%} %{\e[38;5;73m%}[%D]%{\e[m%} %{\e[38;5;209m%}{%*}%{\e[m%} %{\e[38;5;136m%}(%~)%{\e[m%}
+%{\e[38;5;32m%}%#%{\e[m%}'
 else
-    export PROMPT=$'%{\e[38;5;28m%}%n%{\e[m%}%{\e[38;5;142m%}@%m%{\e[m%} %{\e[38;5;38m%}[%D]%{\e[m%} %{\e[38;5;133m%}{%*}%{\e[m%} %{\e[38;5;130m%}(%~)%{\e[m%}
+    export PROMPT=$'%{\e[38;5;28m%}%n%{\e[m%}%{\e[38;5;142m%}@%m%{\e[m%} %{\e[38;5;6m%}[%D]%{\e[m%} %{\e[38;5;133m%}{%*}%{\e[m%} %{\e[38;5;130m%}(%~)%{\e[m%}
 %{\e[38;5;04m%}%#%{\e[m%}'
 
 fi
@@ -30,8 +30,23 @@ HISTFILE=~/.zsh_history
 autoload -Uz compinit
 compinit
 
+setopt extended_history
+setopt append_history
+setopt inc_append_history
+setopt notify
+setopt hist_find_no_dups
+setopt complete_in_word
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -e /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ];then
+  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [ -e /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ];then
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [ -e /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ];then
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [ -e ${HOME}/local/src/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ];then
+  source  ${HOME}/local/src/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  
+fi
+
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
 
@@ -57,6 +72,7 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 export PATH=${HOME}/local/bin:$PATH
 
+unalias -m *
 alias ll='ls -talFh'
 alias la='ls -A'
 alias emacs='env TERM=screen emacsclient -c -a -nw""'
@@ -73,13 +89,13 @@ alias pd='popd'
 alias sdhn='sudo shutdown -h now'
 alias chrome='google-chrome --disable-new-avatar-menu'
 alias share_dir_mount='sudo mount -t vboxsf vm_share ~/host_share'
-alias cal="/usr/bin/cal | grep -C6 --color '`date +' %-d '`'  "
+#alias cal="/usr/bin/cal | grep -C6 --color '`date +' %-d '`'  "
 alias ks='echo "は？"' 
 alias pip-all-update="pip list --outdated --format=legacy | awk '{print $1}' | xargs sudo  pip install -U"
 alias fuck='echo "ふぁっきゅー"'
 alias pbcopy='xclip -selection c'
 alias count_file='ls -UF | grep -v / | wc -l'
-
+alias lessf='less -L +F' 
 
 setopt auto_pushd
 setopt pushd_ignore_dups
@@ -93,7 +109,41 @@ bindkey '^R' history-incremental-pattern-search-backward
 
 export GREP_COLOR="37;45"
 export EDITOR="vim"
+export http_proxy=""
+export https_proxy=""
+export ftp_proxy=""
+export rsync_proxy=""
+export HTTP_PROXY=""
+export HTTPS_PROXY=""
+export FTP_PROXY=""
+export RSYNC_PROXY=""
 
+
+export TERM=xterm-256color
+# プロキシ設定 ==============================================
+P_HOST="proxygate2.nic.nec.co.jp"
+P_PORT="8080"
+# 認証が必要なプロキシの場合
+#PROXY="$USERNAME:$PASSWORD@$HOST:$PORT"
+# 認証が不要なプロキシの場合
+PROXY="$P_HOST:$P_PORT"
+# 実際の環境変数の設定
+export http_proxy="http://$PROXY"
+export https_proxy="http://$PROXY"
+export ftp_proxy="http://$PROXY"
+export rsync_proxy="http://$PROXY"
+export nfs_proxy="localhost:25555"
+
+# 大文字バージョンしか認識しないプログラム用
+export HTTP_PROXY="http://$PROXY"
+export HTTPS_PROXY="http://$PROXY"
+export RSYNC_PROXY="http://$PROXY"
+export FTP_PROXY="http://$PROXY"
+export NFS_PROXY="localhost:25555"
+
+# プロキシを利用しないアドレスの指定（必須）
+export no_proxy="127.0.0.1,localhost"
+export NO_PROXY="$no_proxy"
 export PYTHONPATH=/usr/local:$PYTHONPATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
@@ -106,4 +156,13 @@ fi
 
 export VISUAL='vim'
 stty stop undef
-cal.rb
+
+if type cal.rb > /dev/null 2>&1; then
+  cal.rb
+elif type cal > /dev/null 2>&1; then
+  cal
+fi
+umask 022
+export LC_CTYPE='ja_JP.UTF-8'
+export LC_ALL='ja_JP.UTF-8'
+export LC_MESSAGES='ja_JP.UTF-8'
